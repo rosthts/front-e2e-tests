@@ -1,19 +1,22 @@
 import { useState, type FormEvent } from 'react'
 import './App.css'
+import Dashboard from './components/Dashboard'
+import LoginForm from './components/LoginForm'
 
 function App() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
-  const [successMessage, setSuccessMessage] = useState('')
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     setEmailError('')
     setPasswordError('')
-    setSuccessMessage('')
+    setIsLoggedIn(false)
+
 
     let hasError = false
 
@@ -31,50 +34,26 @@ function App() {
       return
     }
 
-    setSuccessMessage('Login successful')
+    setIsLoggedIn(true)
 
     console.log({ email, password })
   }
 
-  return (
-    <main>
-      <section>
-        <h1>Login</h1>
-        <p>Use your test credentials to continue.</p>
+  if (isLoggedIn) {
+    return <Dashboard onLogout={() => setIsLoggedIn(false)} />
+  }
 
-        <form onSubmit={handleSubmit} data-testid="login-form">
-          <div>
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              data-testid="email-input"
-              name="email"
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-            />
-            {emailError && <p data-testid="email-error">{emailError}</p>}
-          </div>
-
-          <div>
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              data-testid="password-input"
-              name="password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
-            {passwordError && <p data-testid="password-error">{passwordError}</p>}
-          </div>
-
-          <button type="submit" data-testid="submit-button">Sign in</button>
-          {successMessage && <p data-testid="success-message">{successMessage}</p>}
-        </form>
-      </section>
-    </main>
-  )
+    return (
+      <LoginForm
+        email={email}
+        password={password}
+        emailError={emailError}
+        passwordError={passwordError}
+        onEmailChange={setEmail}
+        onPasswordChange={setPassword}
+        onSubmit={handleSubmit}
+      />
+    )
 }
 
 export default App
