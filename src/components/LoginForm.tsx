@@ -3,9 +3,11 @@ type LoginFormProps = {
     password: string
     emailError: string
     passwordError: string
+    isSubmitting: boolean
     onEmailChange: (value: string) => void
     onPasswordChange: (value: string) => void
     onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
+    authError: string
   }
   
   function LoginForm({
@@ -13,6 +15,8 @@ type LoginFormProps = {
     password,
     emailError,
     passwordError,
+    authError,
+    isSubmitting,
     onEmailChange,
     onPasswordChange,
     onSubmit,
@@ -48,9 +52,10 @@ type LoginFormProps = {
                 onChange={(event) => onPasswordChange(event.target.value)}
               />
               {passwordError && <p data-testid="password-error">{passwordError}</p>}
+              {authError && <p data-testid="auth-error">{authError}</p>}
             </div>
   
-            <button type="submit" data-testid="submit-button">Sign in</button>
+            <button type="submit" data-testid="submit-button" disabled={isSubmitting}>{isSubmitting ? 'Signing in...' : 'Sign in'}</button>
           </form>
         </section>
       </main>
