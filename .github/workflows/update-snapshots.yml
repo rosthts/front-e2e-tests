@@ -1,0 +1,26 @@
+name: Update Snapshots
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - run: npm ci
+
+      - run: npx playwright install --with-deps chromium
+
+      - run: npx playwright test --update-snapshots --reporter=list
+        continue-on-error: true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-snapshots
+          path: tests/e2e/**/*-linux.png
