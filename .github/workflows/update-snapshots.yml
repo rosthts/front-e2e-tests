@@ -20,7 +20,10 @@ jobs:
       - run: npx playwright test --update-snapshots --reporter=list
         continue-on-error: true
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: linux-snapshots
-          path: tests/e2e/**/*-linux.png
+      - name: Commit updated snapshots
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add tests/e2e/unauthenticated/visual.spec.ts-snapshots/
+          git diff --staged --quiet || git commit -m "chore: update linux snapshots [skip ci]"
+          git push
