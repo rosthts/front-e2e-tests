@@ -1,5 +1,7 @@
 # Front Test Automation Practice
 
+![Playwright Tests](https://github.com/rosthts/front-e2e-tests/actions/workflows/playwright.yml/badge.svg)
+
 Навчальний frontend-проєкт для практики UI та E2E тестування з Playwright на прикладі простої форми логіну та dashboard без реального бекенду.
 
 ## Tech Stack
